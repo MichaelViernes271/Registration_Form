@@ -24,16 +24,22 @@ if(!isset($_SESSION['valid'])){
 
             <?php
             $id = $_SESSION['id'];
-            $query = mysqli_query($con,"SELECT * FROM users WHERE Id=$id ");
+
+            // Sanitize the $id variable before using it in the SQL query.
+            $id = mysqli_real_escape_string($con, $id);
+
+            $sql = "SELECT * FROM users WHERE id=$id";
+            $query = mysqli_query($con,$sql);
 
             while($result = mysqli_fetch_assoc($query)){
                 $res_Uname = $result["Username"];
                 $res_Email = $result["Email"];
                 $res_Age = $result["Age"];
                 $res_Id = $result["Id"];
+                
+                echo "<a href ='edit.php'?Id=$res_Id>Change Profile</a>";
             }
 
-            echo "<a href ='edit.php'?Id=$res_Id>Change Profile</a>";
             ?>
             
             <a href="php/logout.php"><button class="btn">Log Out</button></a>
